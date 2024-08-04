@@ -1,7 +1,5 @@
-﻿using static Dapper.SqlMapper;
-using System.Data;
-using Npgsql;
-using Microsoft.Extensions.Configuration;
+﻿using System.Data;
+using static Dapper.SqlMapper;
 
 namespace gRPC.DbEngine
 {
@@ -25,22 +23,15 @@ namespace gRPC.DbEngine
         object ExecuteScalar(string script);
     }
 
-    public class PostgresMapper : IPostgresMapper
+    public class PostgresMapper(IDbConnection connection) : IPostgresMapper
     {
-        private readonly IConfiguration _configuration;
-        //private readonly IDbConnection _connection;
-        public PostgresMapper(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        private readonly IDbConnection _connection = connection;
 
         public IDbConnection Connection
         {
             get
             {
-               // return _connection;
-               NpgsqlConnection postgres = new(_configuration.GetConnectionString("PostgresConnString"));
-               return postgres;
+                return _connection;
             }
         }
 

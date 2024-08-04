@@ -1,10 +1,13 @@
 using gRPC.DbEngine;
 using gRPC.Frameworks.CommonMeths;
+using gRPC.Frameworks.CommonProps;
 using gRPC.Repositories.Implementations;
 using gRPC.Repositories.Interfaces;
 using gRPC.Services.Implementations;
 using gRPC.Services.Interfaces;
 using gRPC_Server_NETCore.Services;
+using Npgsql;
+using System.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +15,16 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 
 // Register your custom services and repositories
+builder.Services.AddScoped<IDbConnection>((sp) =>
+{
+    var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString(ConfigurationProps.Postgres_Connection_String);
+    return new NpgsqlConnection(connectionString);
+});
+
 builder.Services.AddScoped<IPostgresMapper, PostgresMapper>();
 builder.Services.AddScoped<IPostgresRepo, PostgresRepo>();
 builder.Services.AddScoped<IPostgresServices, PostgresServices>();
+
 WebApplication app = builder.Build();
 
 ErrorLogger.Initialize(app.Services.GetRequiredService<IHostEnvironment>());

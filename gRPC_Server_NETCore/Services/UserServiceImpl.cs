@@ -8,20 +8,6 @@ namespace gRPC_Server_NETCore.Services
     public class UserServiceImpl(IPostgresServices services) : UserService.UserServiceBase
     {
         private readonly IPostgresServices _services = services;
-        public override Task<GetUserListResponse> GetUserList(GetUserListRequest request, ServerCallContext context)
-        {
-            // Example implementation
-            var users = new List<User>
-            {
-                new User { Id = 1, Name = "John Doe", Age = 22 },
-                new User { Id = 2, Name = "Jane Doe", Age = 25 }
-            };
-
-            var response = new GetUserListResponse();
-            response.Users.AddRange(users);
-
-            return Task.FromResult(response);
-        }
 
         public override async Task<GetUserListResponse> GetUserListFromDB(GetUserListRequest request, ServerCallContext context)
         {
@@ -46,7 +32,7 @@ namespace gRPC_Server_NETCore.Services
         {
             SampleUsers sampleUser = await _services.GetgRPCSingleAsync(request.UserId);
             var response = new GetUserResponse();
-
+            response.User = new User();
             // Map the data to the gRPC response format
             response.User.Id = sampleUser.id;
             response.User.Name = sampleUser.name;
@@ -81,6 +67,22 @@ namespace gRPC_Server_NETCore.Services
             response.UserMyId = sampleUser;
 
             return response;
+        }
+
+        // Sample methods with static data
+        public override Task<GetUserListResponse> GetUserList(GetUserListRequest request, ServerCallContext context)
+        {
+            // Example implementation
+            var users = new List<User>
+            {
+                new User { Id = 1, Name = "John Doe", Age = 22 },
+                new User { Id = 2, Name = "Jane Doe", Age = 25 }
+            };
+
+            var response = new GetUserListResponse();
+            response.Users.AddRange(users);
+
+            return Task.FromResult(response);
         }
 
         public override Task<GetUserResponse> GetUser(GetUserRequest request, ServerCallContext context)
