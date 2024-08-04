@@ -1,0 +1,35 @@
+
+syntax = "proto3";
+
+option csharp_namespace = "gRPC_Server_NETCore.Protos";
+
+package users;
+
+//services
+service UserService {
+    rpc GetUserList (GetUserListRequest) returns (GetUserListResponse);
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
+    rpc GetUserListFromDB (GetUserListRequest) returns (GetUserListResponse);
+}
+
+message GetUserListRequest {
+    // Add any required request fields
+}
+
+message GetUserListResponse {
+    repeated User users = 1;
+}
+
+message GetUserRequest {
+    int32 user_id = 1;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
+
+message User {
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+}
