@@ -11,5 +11,20 @@ namespace gRPC.Services.Implementations
         {
            return await repo.GetgRPCListAsync();
         }
+
+        public async Task<SampleUsers> GetgRPCSingleAsync(int id)
+        {
+            return await repo.GetgRPCSingleAsync(id);
+        }
+
+        public async Task<int> PostgRPCSingleAsync(SampleUsers sampleUsers)
+        {
+            return await repo.PostgRPCSingleAsync(sampleUsers);
+        }
+
+        public async Task<string> GetgRPCSingleNameAsync(int id)
+        {
+            return await repo.GetgRPCSingleNameAsync(id);
+        }
     }
 }

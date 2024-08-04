@@ -24,4 +24,8 @@
     <ProjectReference Include="..\gRPC.Services\gRPC.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ErrorLogsDirectory\" />
+  </ItemGroup>
+
 </Project>
